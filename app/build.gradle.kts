@@ -32,6 +32,14 @@ android {
             "\"${getLocalProperty("google.maps.key")}\""
         )
     }
+    signingConfigs {
+        create("release") {
+            storeFile = file(getLocalProperty("storeFile"))
+            storePassword = getLocalProperty("storePassword")
+            keyAlias = getLocalProperty("keyAlias")
+            keyPassword = getLocalProperty("keyPassword")
+        }
+    }
 
     buildTypes {
         release {
@@ -41,7 +49,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             isMinifyEnabled = false
