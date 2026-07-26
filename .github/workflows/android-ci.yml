@@ -42,7 +42,7 @@ jobs:
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
 
-      - name: run tests unit, instrumented,
+      - name: run tests unit, instrumented, and cover
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 33
@@ -51,13 +51,4 @@ jobs:
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
-          script: ./gradlew connectedCheck
-
-      - name : generate Jacoco Report
-        run : ./gradlew jacocoReport
-
-      - name : publish Jacoco Report
-        uses : actions/upload-artifact@v4
-        with :
-            name : jacoco-report
-            path : app/build/reports/jacoco/jacocoCombinedReport/html
+          script: ./gradlew connectedCheck jacocoReport
