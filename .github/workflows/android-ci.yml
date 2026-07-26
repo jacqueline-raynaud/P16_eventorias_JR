@@ -33,8 +33,6 @@ jobs:
           echo "$GOOGLE_SERVICES_JSON_B64" | base64 -d > app/google-services.json
           echo "google.maps.key=$MAPS_API_KEY" > local.properties
 
-
-
       - name: Build with Gradle version debug
         run: ./gradlew assembleDebug
 
@@ -47,7 +45,7 @@ jobs:
       - name: run tests unit, instrumented,
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 29
+          api-level: 33
           script: ./gradlew connectedCheck
 
       - name : generate Jacoco Report
