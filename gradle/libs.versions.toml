@@ -44,6 +44,7 @@ hiltTesting = "2.51.1"
 composeUiTest = "1.7.8"
 # kotest
 kotest = "5.9.1"
+rules = "1.7.0"
 
 [libraries]
 # Coil
@@ -103,6 +104,7 @@ junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.r
 
 # reseau pour ne pas dépendre de coil
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+androidx-rules = { group = "androidx.test", name = "rules", version.ref = "rules" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
