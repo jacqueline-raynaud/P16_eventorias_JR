@@ -2,7 +2,7 @@ package fr.quinquenaire.p15_eventorias_jr.domain.usecase.eventlist
 
 import android.net.Uri
 import com.google.firebase.Timestamp
-import fr.quinquenaire.p15_eventorias_jr.data.location.GeocoderManager
+import fr.quinquenaire.p15_eventorias_jr.domain.location.GeocoderManager
 import fr.quinquenaire.p15_eventorias_jr.domain.model.Event
 import fr.quinquenaire.p15_eventorias_jr.domain.repository.EventRepository
 import javax.inject.Inject

@@ -116,7 +116,7 @@ class CreateEventViewModel @Inject constructor(
                 category = state.category.name,
                 organizerId = organizerId,
                 imageUri = state.imageUri
-            )
+            ).getOrThrow()
         }
 
             result.fold(

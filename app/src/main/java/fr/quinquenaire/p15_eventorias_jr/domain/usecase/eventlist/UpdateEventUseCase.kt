@@ -3,7 +3,7 @@ package fr.quinquenaire.p15_eventorias_jr.domain.usecase.eventlist
 import android.net.Uri
 import android.util.Log
 import com.google.firebase.firestore.GeoPoint
-import fr.quinquenaire.p15_eventorias_jr.data.location.GeocoderManager
+import fr.quinquenaire.p15_eventorias_jr.domain.location.GeocoderManager
 import fr.quinquenaire.p15_eventorias_jr.domain.model.Event
 import fr.quinquenaire.p15_eventorias_jr.domain.repository.EventRepository
 import kotlinx.coroutines.flow.first

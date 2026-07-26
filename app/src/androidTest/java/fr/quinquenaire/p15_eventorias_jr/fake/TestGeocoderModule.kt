@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
-import fr.quinquenaire.p15_eventorias_jr.data.location.GeocoderManager
+import fr.quinquenaire.p15_eventorias_jr.domain.location.GeocoderManager
 import fr.quinquenaire.p15_eventorias_jr.di.GeocoderModule
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -21,9 +21,11 @@ object TestGeocoderModule {
     @Provides
     @Singleton
     fun provideGeocoderManager(): GeocoderManager {
-        return mockk(relaxed = true) {
-            // valeur fixe, aucun appel réseau réel dans les tests instrumentés
-            coEvery { geocode(any()) } returns GeoPoint(45.7772, 4.8686)
+        // On implémente juste l'interface, pas de constructeur capricieux, pas de Context !
+        return object : GeocoderManager {
+            override suspend fun geocode(address: String): GeoPoint? {
+                return GeoPoint(45.7772, 4.8686)
+            }
         }
     }
 }

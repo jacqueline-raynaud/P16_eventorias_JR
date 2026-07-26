@@ -6,7 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fr.quinquenaire.p15_eventorias_jr.data.location.GeocoderManager
+import fr.quinquenaire.p15_eventorias_jr.data.location.AndroidGeocoderManager
+import fr.quinquenaire.p15_eventorias_jr.domain.location.GeocoderManager
 import javax.inject.Singleton
 
 @Module
@@ -14,9 +15,11 @@ import javax.inject.Singleton
 object GeocoderModule {
     @Provides
     @Singleton
+    // La fonction promet de renvoyer l'INTERFACE (le contrat)
     fun provideGeocoderManager(
         @ApplicationContext context: Context
     ): GeocoderManager {
-        return GeocoderManager(context)
+        // Mais elle fabrique et livre la VRAIE CLASSE Android
+        return AndroidGeocoderManager(context)
     }
 }

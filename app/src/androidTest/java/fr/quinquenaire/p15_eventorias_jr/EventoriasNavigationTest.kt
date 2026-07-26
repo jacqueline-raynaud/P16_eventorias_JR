@@ -7,8 +7,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.GeoPoint
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import fr.quinquenaire.p15_eventorias_jr.domain.model.Event
@@ -47,6 +49,7 @@ class EventoriasNavigationTest {
         description = "Une soirée inoubliable sous les étoiles.",
         date = Timestamp.now(),
         locationName = "Parc de la Tête d'Or, Lyon",
+        location = GeoPoint(45.7597, 4.8422),
         category = "MUSIQUE",
         imageUrl = "",
         organizerId = organizerId
@@ -89,7 +92,7 @@ class EventoriasNavigationTest {
     // Parcours 1 : liste -> détail -> édition -> annulation suppression -> retours
     // -----------------------------------------------------------
 
-    @Test
+ @Test
     fun parcours1_detailEditCancelDeleteBackBack() {
         // 1. Liste -> clic sur l'événement -> détail
         composeTestRule.onNodeWithText("Soirée Jazz au Parc").performClick()
