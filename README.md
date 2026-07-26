@@ -1,6 +1,8 @@
 # Eventorias
 
+Projet OpenClassrooms
 Application Android permettant de découvrir, créer et gérer des événements, avec authentification Firebase et notifications push.
+2ème partie : github actions et SonarQ
 
 ## Fonctionnalités
 
