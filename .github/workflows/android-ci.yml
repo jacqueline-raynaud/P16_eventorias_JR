@@ -25,11 +25,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name : Inject keys and secret config
-        env :
+      - name: Inject keys and secret config
+        env:
           GOOGLE_SERVICES_JSON_B64: ${{ secrets.GOOGLE_SERVICES_JSON }}
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
-        run : |
+        run: |
           echo "$GOOGLE_SERVICES_JSON_B64" | base64 -d > app/google-services.json
           echo "google.maps.key=$MAPS_API_KEY" > local.properties
 
@@ -52,3 +52,15 @@ jobs:
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: ./gradlew connectedCheck jacocoReport
+
+      - name: Cache SonarQube
+        uses : actions/cache@v4
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+
+      - name: Envoyer l'analyse et le rapport JaCoCo à SonarCloud
+        env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: ./gradlew sonar --info
