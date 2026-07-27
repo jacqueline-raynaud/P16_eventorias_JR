@@ -15,7 +15,7 @@ sonar {
         // chemin vers rapport jacoco yaml
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
-            "app/build/reports/coverage/androidTest/debug/connected/report.xml"
+            "app/build/reports/jacoco/jacocoCombinedReport/jacocoCombinedReport.xml,app/build/reports/coverage/androidTest/debug/connected/report.xml"
         )
         property("sonar.androidLint.reportPaths", "")
     }
