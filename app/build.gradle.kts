@@ -34,10 +34,13 @@ android {
     }
     signingConfigs {
         create("release") {
-            storeFile = file(getLocalProperty("storeFile"))
-            storePassword = getLocalProperty("storePassword")
-            keyAlias = getLocalProperty("keyAlias")
-            keyPassword = getLocalProperty("keyPassword")
+            val keystorePath=getLocalProperty("storeFile")
+            if (keystorePath !=null && keystorePath.toString().isNotEmpty()) {
+                storeFile = file(keystorePath)
+                storePassword = getLocalProperty("storePassword")
+                keyAlias = getLocalProperty("keyAlias")
+                keyPassword = getLocalProperty("keyPassword")
+            }
         }
     }
 
@@ -100,6 +103,7 @@ dependencies {
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.googleid)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.rules)
     debugImplementation(libs.compose.ui.tooling)
 
     // Lifecycle & Coroutines

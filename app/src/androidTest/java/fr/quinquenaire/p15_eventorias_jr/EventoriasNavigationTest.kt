@@ -1,5 +1,6 @@
 package fr.quinquenaire.p15_eventorias_jr
 
+import android.os.Build
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -7,8 +8,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.test.core.app.ActivityScenario
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.rule.GrantPermissionRule
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.GeoPoint
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import fr.quinquenaire.p15_eventorias_jr.domain.model.Event
@@ -34,6 +38,23 @@ class EventoriasNavigationTest {
     @get:Rule(order = 1)
     val composeTestRule = createEmptyComposeRule()
 
+    @get:Rule(order = 2)
+    // accord automatique des permissions pour éviter les popups bloquants sur github actions
+    val permissionRule: GrantPermissionRule = if (Build.VERSION.SDK_INT >= 33) {
+        // Sur API 33+ (comme GitHub), on demande tout
+        GrantPermissionRule.grant(
+            android.Manifest.permission.POST_NOTIFICATIONS,
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    } else {
+        // Sur les vieux émulateurs ( PC ), on ignore POST_NOTIFICATIONS
+        GrantPermissionRule.grant(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    }
+
     @Inject lateinit var eventRepository: EventRepository
     @Inject lateinit var userProfileRepository: UserProfileRepository
 
@@ -47,6 +68,7 @@ class EventoriasNavigationTest {
         description = "Une soirée inoubliable sous les étoiles.",
         date = Timestamp.now(),
         locationName = "Parc de la Tête d'Or, Lyon",
+        location = GeoPoint(45.7597, 4.8422),
         category = "MUSIQUE",
         imageUrl = "",
         organizerId = organizerId
@@ -89,7 +111,7 @@ class EventoriasNavigationTest {
     // Parcours 1 : liste -> détail -> édition -> annulation suppression -> retours
     // -----------------------------------------------------------
 
-    @Test
+ @Test
     fun parcours1_detailEditCancelDeleteBackBack() {
         // 1. Liste -> clic sur l'événement -> détail
         composeTestRule.onNodeWithText("Soirée Jazz au Parc").performClick()
