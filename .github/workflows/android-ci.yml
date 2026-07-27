@@ -62,5 +62,5 @@ jobs:
 
       - name: Envoyer l'analyse et le rapport JaCoCo à SonarCloud
         env:
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew sonar --info
