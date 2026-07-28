@@ -49,7 +49,6 @@ class EventRepositoryImpl @Inject constructor(
                 return@addSnapshotListener
             }
 
-            //val events = snapshot?.toObjects(Event::class.java) ?: emptyList()
             val events = snapshot?.documents?.mapNotNull { doc ->
                 doc.toObject(Event::class.java)?.copy(id = doc.id)
             } ?: emptyList()

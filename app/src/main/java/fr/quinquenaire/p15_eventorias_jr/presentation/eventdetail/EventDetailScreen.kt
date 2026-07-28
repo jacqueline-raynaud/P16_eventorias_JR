@@ -58,7 +58,7 @@ import fr.quinquenaire.p15_eventorias_jr.presentation.eventdetail.contract.Event
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventdetail.contract.EventDetailEffect
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventdetail.model.EventDetailMutableState
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventdetail.model.EventDetailUiState
-import fr.quinquenaire.p15_eventorias_jr.presentation.theme.P15_eventorias_jrTheme
+import fr.quinquenaire.p15_eventorias_jr.presentation.theme.EventoriasjrTheme
 import kotlinx.coroutines.flow.collectLatest
 
 // ---------------------------------------------------------------------------
@@ -347,7 +347,7 @@ private fun EventDetailBody(event: EventDetailUiState, modifier: Modifier = Modi
 @Preview(showBackground = true)
 @Composable
 private fun EventDetailContentPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         EventDetailContent(
             uiState = EventDetailMutableState(
                 event = EventDetailUiState(
@@ -372,7 +372,7 @@ private fun EventDetailContentPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun EventDetailContentLoadingPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         EventDetailContent(
             uiState = EventDetailMutableState(isLoading = true),
             snackbarHostState = remember { SnackbarHostState() },
@@ -384,7 +384,7 @@ private fun EventDetailContentLoadingPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun EventDetailContentErrorPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         EventDetailContent(
             uiState = EventDetailMutableState(error = "Une erreur est survenue lors du chargement."),
             snackbarHostState = remember { SnackbarHostState() },

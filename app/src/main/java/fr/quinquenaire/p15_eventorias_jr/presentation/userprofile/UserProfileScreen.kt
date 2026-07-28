@@ -60,7 +60,7 @@ import coil.compose.AsyncImage
 import com.firebase.ui.auth.AuthUI
 import fr.quinquenaire.p15_eventorias_jr.FirebaseUiActivity
 import fr.quinquenaire.p15_eventorias_jr.R
-import fr.quinquenaire.p15_eventorias_jr.presentation.theme.P15_eventorias_jrTheme
+import fr.quinquenaire.p15_eventorias_jr.presentation.theme.EventoriasjrTheme
 import fr.quinquenaire.p15_eventorias_jr.presentation.userprofile.contract.UserProfileAction
 import fr.quinquenaire.p15_eventorias_jr.presentation.userprofile.contract.UserProfileEffect
 import fr.quinquenaire.p15_eventorias_jr.presentation.userprofile.model.UserProfileMutableState
@@ -359,7 +359,7 @@ private fun UserProfileBody(
 @Preview(showBackground = true)
 @Composable
 private fun UserProfileContentPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         UserProfileContent(
             uiState = UserProfileMutableState(
                 profile = UserProfileUiState(
@@ -380,7 +380,7 @@ private fun UserProfileContentPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun UserProfileContentLoadingPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         UserProfileContent(
             uiState = UserProfileMutableState(isLoading = true),
             snackbarHostState = SnackbarHostState(),
@@ -392,7 +392,7 @@ private fun UserProfileContentLoadingPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun UserProfileContentErrorPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         UserProfileContent(
             uiState = UserProfileMutableState(error = "Profil introuvable"),
             snackbarHostState = SnackbarHostState(),
@@ -404,7 +404,7 @@ private fun UserProfileContentErrorPreview() {
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun UserProfileContentDarkPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         UserProfileContent(
             uiState = UserProfileMutableState(
                 profile = UserProfileUiState(

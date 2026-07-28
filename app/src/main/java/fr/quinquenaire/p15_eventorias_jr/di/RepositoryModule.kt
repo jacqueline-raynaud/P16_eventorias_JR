@@ -12,17 +12,17 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
+interface RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindEventRepository(
+    fun bindEventRepository(
         impl: EventRepositoryImpl
     ): EventRepository
 
     @Binds
     @Singleton
-    abstract fun bindUserProfileRepository(
+    fun bindUserProfileRepository(
         impl: UserProfileRepositoryImpl
     ): UserProfileRepository
 

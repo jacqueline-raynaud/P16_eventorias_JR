@@ -70,7 +70,7 @@ import fr.quinquenaire.p15_eventorias_jr.presentation.eventlist.contract.EventLi
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventlist.contract.EventListEffect
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventlist.model.EventListMutableState
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventlist.model.EventListUiState
-import fr.quinquenaire.p15_eventorias_jr.presentation.theme.P15_eventorias_jrTheme
+import fr.quinquenaire.p15_eventorias_jr.presentation.theme.EventoriasjrTheme
 import kotlinx.coroutines.flow.collectLatest
 
 
@@ -119,7 +119,7 @@ fun EventListContent(
     onAction: (EventListAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
-Scaffold(
+    Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             EventListTopBar(
@@ -183,8 +183,7 @@ Scaffold(
 }
 
 // --- TopBar avec tri et recherche---
-
-@OptIn(ExperimentalMaterial3Api::class)
+// aiguilleur
 @Composable
 private fun EventListTopBar(
     sortOrder: SortOrder,
@@ -192,97 +191,121 @@ private fun EventListTopBar(
     onSortOrderChanged: (SortOrder) -> Unit,
     onSearchQueryChanged: (String) -> Unit
 ) {
-
     var searchActive by remember { mutableStateOf(false) }
-    val focusRequester = remember { FocusRequester() }
 
     if (searchActive) {
-        LaunchedEffect(Unit) {
-            focusRequester.requestFocus()
-        }
-        TopAppBar(
-            title = {
-                TextField(
-                    value = searchQuery,
-                    onValueChange = onSearchQueryChanged, // Met à jour le ViewModel à chaque lettre tapée
-                    placeholder = { Text(stringResource(R.string.search_placeholder)) },
-                    // On rend le fond du TextField transparent pour qu'il s'intègre parfaitement à la TopBar
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                        unfocusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                        disabledContainerColor = androidx.compose.ui.graphics.Color.Transparent,
-                        focusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
-                        unfocusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester),
-                    singleLine = true
-                )
-            },
-            navigationIcon = {
-                // Bouton retour pour quitter le mode recherche
-                IconButton(onClick = {
-                    searchActive = false
-                    onSearchQueryChanged("") // On réinitialise la recherche en quittant
-                }) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = stringResource(R.string.Back_to_the_list)
-                    )
-                }
-            },
-            actions = {
-                // Croix pour vider le champ de texte rapidement
-                if (searchQuery.isNotEmpty()) {
-                    IconButton(onClick = { onSearchQueryChanged("") }) {
-                        Icon(Icons.Default.Close, contentDescription = stringResource(R.string.delete))
-                    }
-                }
+        SearchTopBar(
+            searchQuery = searchQuery,
+            onSearchQueryChanged = onSearchQueryChanged,
+            onCloseSearch = {
+                searchActive = false
+                onSearchQueryChanged("")
             }
         )
-
     } else {
-
-        TopAppBar(
-            title = { Text(text = stringResource(R.string.event_list_title)) },
-            actions = {
-                IconButton(onClick = { searchActive = true }) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = stringResource(R.string.search_placeholder)
-                    )
-                }
-                IconButton(
-                    onClick = {
-                    val newSortOrder = when (sortOrder) {
-                        SortOrder.DEFAULT -> SortOrder.BY_DATE_ASC
-                        SortOrder.BY_DATE_ASC -> SortOrder.BY_DATE_DESC
-                        //SortOrder.BY_DATE_DESC -> SortOrder.BY_CATEGORY
-                        //SortOrder.BY_CATEGORY -> SortOrder.DEFAULT
-                        SortOrder.BY_DATE_DESC -> SortOrder.DEFAULT // del if category is implémented
-                    }
-                    onSortOrderChanged(newSortOrder)
-                    }
-                ) {
-                    Icon(
-                        imageVector = when (sortOrder){
-                            SortOrder.DEFAULT -> Icons.Default.UnfoldMore
-                            SortOrder.BY_DATE_ASC -> Icons.Default.KeyboardArrowUp
-                            SortOrder.BY_DATE_DESC -> Icons.Default.KeyboardArrowDown
-                            //SortOrder.BY_CATEGORY -> Icons.Default.LocationOn
-                        },
-                        contentDescription = stringResource(R.string.sort_by_date),
-                        tint = if (sortOrder == SortOrder.BY_DATE_ASC)
-                            MaterialTheme.colorScheme.primary
-                        else
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
+        DefaultTopBar(
+            sortOrder = sortOrder,
+            onSortOrderChanged = onSortOrderChanged,
+            onOpenSearch = { searchActive = true }
         )
     }
 }
+
+// 2. barre de recherche
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun SearchTopBar(
+    searchQuery: String,
+    onSearchQueryChanged: (String) -> Unit,
+    onCloseSearch: () -> Unit
+) {
+    val focusRequester = remember { FocusRequester() }
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
+    TopAppBar(
+        title = {
+            TextField(
+                value = searchQuery,
+                onValueChange = onSearchQueryChanged,
+                placeholder = { Text(stringResource(R.string.search_placeholder)) },
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
+                    unfocusedContainerColor = androidx.compose.ui.graphics.Color.Transparent,
+                    disabledContainerColor = androidx.compose.ui.graphics.Color.Transparent,
+                    focusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent,
+                    unfocusedIndicatorColor = androidx.compose.ui.graphics.Color.Transparent
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
+                singleLine = true
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = onCloseSearch) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(R.string.Back_to_the_list)
+                )
+            }
+        },
+        actions = {
+            if (searchQuery.isNotEmpty()) {
+                IconButton(onClick = { onSearchQueryChanged("") }) {
+                    Icon(Icons.Default.Close, contentDescription = stringResource(R.string.delete))
+                }
+            }
+        }
+    )
+}
+
+// barre par défaut
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun DefaultTopBar(
+    sortOrder: SortOrder,
+    onSortOrderChanged: (SortOrder) -> Unit,
+    onOpenSearch: () -> Unit
+) {
+    TopAppBar(
+        title = { Text(text = stringResource(R.string.event_list_title)) },
+        actions = {
+            IconButton(onClick = onOpenSearch) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = stringResource(R.string.search_placeholder)
+                )
+            }
+            IconButton(
+                onClick = {
+                    val newSortOrder = when (sortOrder) {
+                        SortOrder.DEFAULT -> SortOrder.BY_DATE_ASC
+                        SortOrder.BY_DATE_ASC -> SortOrder.BY_DATE_DESC
+                        SortOrder.BY_DATE_DESC -> SortOrder.DEFAULT
+                    }
+                    onSortOrderChanged(newSortOrder)
+                }
+            ) {
+                Icon(
+                    imageVector = when (sortOrder) {
+                        SortOrder.DEFAULT -> Icons.Default.UnfoldMore
+                        SortOrder.BY_DATE_ASC -> Icons.Default.KeyboardArrowUp
+                        SortOrder.BY_DATE_DESC -> Icons.Default.KeyboardArrowDown
+                    },
+                    contentDescription = stringResource(R.string.sort_by_date),
+                    tint = if (sortOrder == SortOrder.BY_DATE_ASC)
+                        MaterialTheme.colorScheme.primary
+                    else
+                        MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    )
+}
+
 
 // --- Filtre catégories (chips horizontaux) ---
 
@@ -486,7 +509,7 @@ private fun CategoryBadge(category: String) {
 @Preview(showBackground = true)
 @Composable
 private fun EventListContentPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         EventListContent(
             uiState = EventListMutableState(
                 events = listOf(
@@ -495,7 +518,7 @@ private fun EventListContentPreview() {
                         time = "20:00", category = "Musique", imageUrl = "",
                         locationName = "Lyon", organizerId = "u1",
                         latitude = null, longitude = null,
-                        rawDate=null
+                        rawDate = null
                     )
                 )
             ),
@@ -508,7 +531,7 @@ private fun EventListContentPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun EventListContentLoadingPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         EventListContent(
             uiState = EventListMutableState(isLoading = true),
             snackbarHostState = SnackbarHostState(),
@@ -520,7 +543,7 @@ private fun EventListContentLoadingPreview() {
 @Preview(showBackground = true)
 @Composable
 private fun EventListContentErrorPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         EventListContent(
             uiState = EventListMutableState(error = "Erreur réseau"),
             snackbarHostState = SnackbarHostState(),

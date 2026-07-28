@@ -21,11 +21,6 @@ object TestGeocoderModule {
     @Provides
     @Singleton
     fun provideGeocoderManager(): GeocoderManager {
-        // On implémente juste l'interface, pas de constructeur capricieux, pas de Context !
-        return object : GeocoderManager {
-            override suspend fun geocode(address: String): GeoPoint? {
-                return GeoPoint(45.7772, 4.8686)
-            }
-        }
+        return GeocoderManager { GeoPoint(45.7772, 4.8686) }
     }
 }

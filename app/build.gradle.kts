@@ -156,6 +156,8 @@ dependencies {
 }
 
 tasks.register<JacocoReport>("jacocoCombinedReport") {
+    description = "Generates xml coverage report for this project."
+    group = JavaBasePlugin.VERIFICATION_GROUP
 
     dependsOn(
         "testDebugUnitTest",
@@ -221,7 +223,8 @@ tasks.register<JacocoReport>("jacocoCombinedReport") {
 }
 
 tasks.register("aggregateTestReportsHtml") {
-
+    description = "Generates xml coverage report for this project."
+    group = JavaBasePlugin.DOCUMENTATION_GROUP
     dependsOn(
         "testDebugUnitTest",
         "connectedDebugAndroidTest"

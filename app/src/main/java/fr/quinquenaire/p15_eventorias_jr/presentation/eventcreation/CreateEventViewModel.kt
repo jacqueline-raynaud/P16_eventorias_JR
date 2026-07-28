@@ -90,44 +90,35 @@ class CreateEventViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isSaving = true, error = null) }
 
-            // construction date au format ui - try catch pour éviter crash
-            val result = runCatching {
-                val dateMillis =
-                    state.dateMillis ?: throw IllegalArgumentException("Date manquante")
+            try {
+                // données obligatoires
+                val dateMillis = state.dateMillis ?: throw IllegalArgumentException("Date manquante")
                 val hour = state.hour ?: throw IllegalStateException("Heure manquante")
                 val minute = state.minute ?: throw IllegalStateException("Minutes manquantes")
                 val category = state.category ?: throw IllegalStateException("Catégorie manquante")
 
+                // 2Construction  timestamp
                 val dateTimestamp = buildTimestamp(dateMillis, hour, minute)
 
+                // 3. Appel du Use Case
+                // getOrThrow() lancera une exception si l'enregistrement échoue côté base de données
+                createEventUseCase(
+                    name = state.name,
+                    description = state.description,
+                    date = dateTimestamp,
+                    locationName = state.address,
+                    category = category.name,
+                    organizerId = organizerId,
+                    imageUri = state.imageUri
+                ).getOrThrow()
 
-            /*val dateTimestamp = buildTimestamp(
-                state.dateMillis!!,
-                state.hour!!,
-                state.minute!!
-            )*/
+                // ok on revient à la liste
+                emitEffect(CreateEventEffect.NavigateBack)
 
-            // appel usecase avec données brutes
-            createEventUseCase(
-                name = state.name,
-                description = state.description,
-                date = dateTimestamp,
-                locationName = state.address,
-                category = state.category.name,
-                organizerId = organizerId,
-                imageUri = state.imageUri
-            ).getOrThrow()
-        }
-
-            result.fold(
-                onSuccess = {
-                    emitEffect(CreateEventEffect.NavigateBack)
-                },
-                onFailure = { e ->
-                    _uiState.update { it.copy(isSaving = false) }
-                    emitEffect(CreateEventEffect.ShowSnackbar(e.message ?: "Erreur"))
-                }
-            )
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isSaving = false) }
+                emitEffect(CreateEventEffect.ShowSnackbar(e.message ?: "Erreur inattendue"))
+            }
         }
     }
 }

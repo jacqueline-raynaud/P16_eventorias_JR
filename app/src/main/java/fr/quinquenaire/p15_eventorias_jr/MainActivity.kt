@@ -20,7 +20,7 @@ import fr.quinquenaire.p15_eventorias_jr.domain.usecase.userprofile.SyncNotifica
 import fr.quinquenaire.p15_eventorias_jr.presentation.navigation.EventoriasBottomBar
 import fr.quinquenaire.p15_eventorias_jr.presentation.navigation.EventoriasDestinations
 import fr.quinquenaire.p15_eventorias_jr.presentation.navigation.EventoriasNavHost
-import fr.quinquenaire.p15_eventorias_jr.presentation.theme.P15_eventorias_jrTheme
+import fr.quinquenaire.p15_eventorias_jr.presentation.theme.EventoriasjrTheme
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            P15_eventorias_jrTheme {
+            EventoriasjrTheme {
                 val navController = rememberNavController()
                 val currentBackStack by navController.currentBackStackEntryAsState()
                 val currentRoute = currentBackStack?.destination?.route

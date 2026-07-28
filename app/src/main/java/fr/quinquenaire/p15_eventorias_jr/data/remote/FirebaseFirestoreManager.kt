@@ -34,7 +34,6 @@ class FirebaseFirestoreManager(private val firestore: FirebaseFirestore) {
         val listener = firestore.collection("events").document(eventId)
             .addSnapshotListener { snapshot, error ->
                 if (error != null) {
-                    //Log.e("EventoriasApp", error, "Error fetching event detail")
                     Log.e("EventoriasApp", "Error fetching event detail", error)
                     trySend(null)
                     return@addSnapshotListener
@@ -46,8 +45,8 @@ class FirebaseFirestoreManager(private val firestore: FirebaseFirestore) {
     }
 
 
-    // if the database grows
-    /*fun searchEvents(query: String): Flow<List<Event>> = callbackFlow {
+    /*if the database grows
+    fun searchEvents(query: String): Flow<List<Event>> = callbackFlow {
         val listener = firestore.collection("events")
             .orderBy("name")
             .startAt(query)
@@ -147,15 +146,6 @@ class FirebaseFirestoreManager(private val firestore: FirebaseFirestore) {
             throw e
         }
     }
-
-    /*suspend fun createUserProfile(user: UserProfile) {
-        try {
-            firestore.collection("users").document(user.uid).set(user).await()
-        } catch (e: Exception) {
-            Log.e("EventoriasApp", "Error creating user profile", e)
-            throw e
-        }
-    }*/
 
     suspend fun updateUserProfile(profile: UserProfile) {
         try {

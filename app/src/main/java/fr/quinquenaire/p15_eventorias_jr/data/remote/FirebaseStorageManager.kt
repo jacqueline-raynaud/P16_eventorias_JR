@@ -27,7 +27,6 @@ suspend fun deleteEventImage(eventId: String) {
             .delete()
             .await()
     } catch (e: Exception) {
-        // Non bloquant : un fichier orphelin dans Storage n'a pas d'impact fonctionnel
         Log.e("EventoriasApp", "Error deleting event image", e)
     }
 }
@@ -39,7 +38,6 @@ suspend fun deleteEventImage(eventId: String) {
             avatarRef.putFile(avatarUri).await()
             avatarRef.downloadUrl.await().toString()
         } catch (e: Exception) {
-            //Log.e("EventoriasApp", e, "Error uploading UserProfile avatar")
             Log.e("EventoriasApp", "Error uploading UserProfile avatar", e)
             throw e
         }
@@ -47,9 +45,6 @@ suspend fun deleteEventImage(eventId: String) {
 
     suspend fun deleteAvatarByUrl(avatarUrl: String) {
         if (avatarUrl.isBlank()) return
-        // Si l'utilisateur ne s'est jamais mis d'avatar personnalisé, avatarUrl
-        // peut être la photo de son compte Google (user.photoUrl) — une URL externe,
-        // pas un fichier dans ton bucket Storage. Rien à supprimer dans ce cas.
         if (!avatarUrl.contains("firebasestorage")) return
 
         try {

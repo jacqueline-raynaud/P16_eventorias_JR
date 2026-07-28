@@ -47,7 +47,7 @@ import fr.quinquenaire.p15_eventorias_jr.presentation.common.eventcomponent.Time
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventedit.contract.EventEditAction
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventedit.contract.EventEditEffect
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventedit.model.EventEditMutableState
-import fr.quinquenaire.p15_eventorias_jr.presentation.theme.P15_eventorias_jrTheme
+import fr.quinquenaire.p15_eventorias_jr.presentation.theme.EventoriasjrTheme
 import kotlinx.coroutines.flow.collectLatest
 
 @Composable
@@ -207,7 +207,7 @@ private fun EventEditForm(
 @Preview(showBackground = true)
 @Composable
 fun EventEditContentPreview() {
-    P15_eventorias_jrTheme {
+    EventoriasjrTheme {
         EventEditContent(
             uiState = EventEditMutableState(
                 name = "Concert de Jazz",
