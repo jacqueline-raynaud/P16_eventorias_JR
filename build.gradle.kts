@@ -13,5 +13,16 @@ sonar {
         property("sonar.projectKey", "jacqueline-raynaud_P16_eventorias_JR")
         property("sonar.organization", "jacqueline-raynaud")
         property("sonar.androidLint.reportPaths", "")
+        property("sonar.coverage.jacoco.xmlReportPaths", "")
+    }
+}
+subprojects {
+    sonar {
+        properties {
+            property(
+                "sonar.coverage.jacoco.xmlReportPaths",
+                "build/reports/jacoco/jacocoCombinedReport/jacocoCombinedReport.xml,build/reports/coverage/androidTest/debug/connected/report.xml"
+            )
+        }
     }
 }

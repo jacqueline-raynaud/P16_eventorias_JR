@@ -278,13 +278,3 @@ tasks.register("aggregateTestReportsHtml") {
         println("Rapport agrégé : ${reportDir.absolutePath}/index.html")
     }
 }
-
-sonar {
-    properties {
-        // path sans app
-        property(
-            "sonar.coverage.jacoco.xmlReportPaths",
-            "build/reports/jacoco/jacocoCombinedReport/jacocoCombinedReport.xml,build/reports/coverage/androidTest/debug/connected/report.xml"
-        )
-    }
-}
