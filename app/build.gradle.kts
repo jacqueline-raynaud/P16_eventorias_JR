@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.sonarqube)
     jacoco
 }
 
@@ -280,6 +281,9 @@ tasks.register("aggregateTestReportsHtml") {
 }
 sonar {
     properties {
+        property("sonar.projectKey", "jacqueline-raynaud_P16_eventorias_JR")
+        property("sonar.organization", "jacqueline-raynaud")
+        property("sonar.androidLint.reportPaths", "")
         property(
             "sonar.coverage.jacoco.xmlReportPaths",
             "${layout.buildDirectory.get()}/reports/jacoco/jacocoCombinedReport/jacocoCombinedReport.xml,${layout.buildDirectory.get()}/reports/coverage/androidTest/debug/connected/report.xml"

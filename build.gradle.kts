@@ -6,12 +6,4 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.google.gms.google.services) apply false
-    alias(libs.plugins.sonarqube)
-}
-sonar {
-    properties {
-        property("sonar.projectKey", "jacqueline-raynaud_P16_eventorias_JR")
-        property("sonar.organization", "jacqueline-raynaud")
-        property("sonar.androidLint.reportPaths", "")
-    }
 }
