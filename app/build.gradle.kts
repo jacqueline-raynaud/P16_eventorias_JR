@@ -278,3 +278,11 @@ tasks.register("aggregateTestReportsHtml") {
         println("Rapport agrégé : ${reportDir.absolutePath}/index.html")
     }
 }
+sonar {
+    properties {
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "${layout.buildDirectory.get()}/reports/jacoco/jacocoCombinedReport/jacocoCombinedReport.xml,${layout.buildDirectory.get()}/reports/coverage/androidTest/debug/connected/report.xml"
+        )
+    }
+}
