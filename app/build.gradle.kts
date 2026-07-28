@@ -35,8 +35,8 @@ android {
     }
     signingConfigs {
         create("release") {
-            val keystorePath=getLocalProperty("storeFile")
-            if (keystorePath !=null && keystorePath.toString().isNotEmpty()) {
+            val keystorePath = getLocalProperty("storeFile")
+            if (keystorePath != null && keystorePath.toString().isNotEmpty()) {
                 storeFile = file(keystorePath)
                 storePassword = getLocalProperty("storePassword")
                 keyAlias = getLocalProperty("keyAlias")
@@ -87,10 +87,12 @@ android {
 }
 
 dependencies {
-    // Core Android
-    implementation("androidx.core:core-ktx:1.13.0")
+// implementation
+    // Core Android & Appcompat
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.appcompat)
 
-    // Compose BOM
+    // Compose
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.graphics)
@@ -99,20 +101,13 @@ dependencies {
     implementation(libs.compose.material.icons.extended)
     implementation(libs.activity.compose)
     implementation(libs.navigation.compose)
-    implementation(libs.firebase.config)
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services.auth)
-    implementation(libs.googleid)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.rules)
-    debugImplementation(libs.compose.ui.tooling)
 
     // Lifecycle & Coroutines
     implementation(libs.lifecycle.runtime.compose)
     implementation(libs.kotlinx.coroutines.android)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
+    implementation(libs.coroutines.core)
 
-    // Firebase
+    // Firebase & Auth
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
@@ -120,39 +115,44 @@ dependencies {
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.analytics)
     implementation(libs.firebaseui.auth)
+    implementation(libs.firebase.config)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
     // Hilt
     implementation(libs.hilt.android)
-    ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.lifecycle.viewmodel.compose)
 
-
-    // Image Loading
+    // Utilitaires (Image, Réseau, Règles)
     implementation(libs.coil.compose)
+    implementation(libs.okhttp)
+    implementation(libs.androidx.rules)
 
-    // Testing - Unit Tests
+// outils
+    ksp(libs.hilt.compiler)
+
+// debug
+    debugImplementation(libs.compose.ui.tooling)
+    debugImplementation(libs.compose.ui.test.manifest)
+
+// tests unitaires
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.turbine)
+    testImplementation(libs.kotest.runner.junit5)
+    testImplementation(libs.kotest.assertions.core)
 
-    // Testing - Instrumented Tests
+// tests instrumentés
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.hilt.android.testing)
     androidTestImplementation(platform(libs.compose.bom))
     androidTestImplementation(libs.compose.ui.test.junit4)
-    debugImplementation(libs.compose.ui.test.manifest)
-    androidTestImplementation(libs.hilt.android.testing)
-    kspAndroidTest(libs.hilt.compiler)
     androidTestImplementation(libs.mockk.android)
 
-    // kotest
-    testImplementation(libs.kotest.runner.junit5)
-    testImplementation(libs.kotest.assertions.core)
-
-    // reseau pour ne pas dépendre de coil
-    implementation(libs.okhttp)
+    kspAndroidTest(libs.hilt.compiler)
 }
 
 tasks.register<JacocoReport>("jacocoCombinedReport") {
@@ -190,11 +190,19 @@ tasks.register<JacocoReport>("jacocoCombinedReport") {
 
     classDirectories.setFrom(
         files(
-            fileTree("${layout.buildDirectory.get()} {/intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes"){exclude(excludes)},
-            fileTree("${layout.buildDirectory.get()}/intermediates/javac/debug/compileDebugJavaWithJavac/classes"){exclude(excludes)},
+            fileTree("${layout.buildDirectory.get()} {/intermediates/built_in_kotlinc/debug/compileDebugKotlin/classes") {
+                exclude(
+                    excludes
+                )
+            },
+            fileTree("${layout.buildDirectory.get()}/intermediates/javac/debug/compileDebugJavaWithJavac/classes") {
+                exclude(
+                    excludes
+                )
+            },
             fileTree(
                 "${layout.buildDirectory.get()}/intermediates/classes/debug/transformDebugClassesWithAsm/dirs"
-            ) {exclude(excludes)}
+            ) { exclude(excludes) }
         )
     )
 
@@ -210,15 +218,6 @@ tasks.register<JacocoReport>("jacocoCombinedReport") {
             include("outputs/code_coverage/debugAndroidTest/**/*.ec")
         }
     )
-}
-
-fun getLocalProperty(key: String): String {
-    val localProperties = Properties()
-    val localFile = rootProject.file("local.properties")
-    if (localFile.exists()) {
-        localProperties.load(localFile.inputStream())
-    }
-    return localProperties.getProperty(key, "")
 }
 
 tasks.register("aggregateTestReportsHtml") {
@@ -279,6 +278,15 @@ tasks.register("aggregateTestReportsHtml") {
         println("Rapport agrégé : ${reportDir.absolutePath}/index.html")
     }
 }
+fun getLocalProperty(key: String): String {
+    val localProperties = Properties()
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        localProperties.load(localFile.inputStream())
+    }
+    return localProperties.getProperty(key, "")
+}
+
 sonar {
     properties {
         property("sonar.projectKey", "jacqueline-raynaud_P16_eventorias_JR")

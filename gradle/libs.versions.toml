@@ -2,6 +2,8 @@
 # Gradle & Kotlin
 agp = "9.1.1"
 kotlin = "2.3.21"
+coroutines = "1.11.0"
+core="1.13.0"
 
 # Hilt
 hilt = "2.59.2"
@@ -60,6 +62,8 @@ hilt-lifecycle-viewmodel-compose={ group = "androidx.hilt", name = "hilt-lifecyc
 # Lifecycle & Coroutines
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlin" }
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core" }
 
 # Jetpack Compose
 compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
