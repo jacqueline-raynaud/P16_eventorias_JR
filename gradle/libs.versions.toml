@@ -25,6 +25,7 @@ googleGmsGoogleServices = "4.4.4"
 coilCompose = "2.7.0"
 ksp = "2.3.5"
 jacoco = "0.8.12"
+sonarqube = "7.3.1.8318"
 
 # reseau (pour ne pas dépendre de coil
 okhttp = "4.12.0"
@@ -113,3 +114,4 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
