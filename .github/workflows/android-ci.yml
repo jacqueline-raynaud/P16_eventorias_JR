@@ -67,6 +67,7 @@ jobs:
         uses: madrapps/jacoco-report@v1.8.0
         with :
           paths : ${{ github.workspace }}/**/build/reports/jacoco/**/debugCoverage.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Cache SonarQube
         uses : actions/cache@v4
