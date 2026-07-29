@@ -31,6 +31,11 @@ jobs:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_B64 }}
         run: echo "$KEYSTORE_B64" | base64 -d > app/release.keystore
 
+      - name: DEBUG - vérifier le keystore
+        run: |
+          ls -la app/release.keystore
+          file app/release.keystore
+
       - name: Créer local.properties (Maps + signature)
         env:
           MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
