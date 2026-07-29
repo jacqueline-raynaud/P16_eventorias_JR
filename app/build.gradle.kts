@@ -300,5 +300,10 @@ sonar {
             "sonar.coverage.jacoco.xmlReportPaths",
             "${layout.buildDirectory.get()}/reports/jacoco/jacocoCombinedReport/jacocoCombinedReport.xml,${layout.buildDirectory.get()}/reports/coverage/androidTest/debug/connected/report.xml"
         )
+        property(
+            "sonar.coverage.exclusions",
+            "**/theme/**, **/*Module.kt, **/AndroidGeocoderManager.kt"
+        )
+
     }
 }

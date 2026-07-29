@@ -48,6 +48,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -66,6 +67,7 @@ import coil.compose.AsyncImage
 import fr.quinquenaire.p15_eventorias_jr.R
 import fr.quinquenaire.p15_eventorias_jr.domain.SortOrder
 import fr.quinquenaire.p15_eventorias_jr.domain.model.EventCategory
+import fr.quinquenaire.p15_eventorias_jr.presentation.common.eventcomponent.ErrorContent
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventlist.contract.EventListAction
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventlist.contract.EventListEffect
 import fr.quinquenaire.p15_eventorias_jr.presentation.eventlist.model.EventListMutableState
@@ -191,7 +193,7 @@ private fun EventListTopBar(
     onSortOrderChanged: (SortOrder) -> Unit,
     onSearchQueryChanged: (String) -> Unit
 ) {
-    var searchActive by remember { mutableStateOf(false) }
+     var searchActive by rememberSaveable{mutableStateOf(searchQuery.isNotEmpty())}
 
     if (searchActive) {
         SearchTopBar(
@@ -211,7 +213,7 @@ private fun EventListTopBar(
     }
 }
 
-// 2. barre de recherche
+// barre de recherche
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchTopBar(
@@ -345,31 +347,6 @@ private fun CategoryFilterBar(
 @Composable
 private fun LoadingContent() {
     CircularProgressIndicator()
-}
-
-// ---------------------------------------------------------------------------
-// État : erreur
-// ---------------------------------------------------------------------------
-
-@Composable
-private fun ErrorContent(
-    message: String,
-    onRetry: () -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(horizontal = 32.dp)
-    ) {
-        Text(
-            text = message,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.error
-        )
-        Button(onClick = onRetry) {
-            Text(text = stringResource(R.string.retry))
-        }
-    }
 }
 
 // ---------------------------------------------------------------------------
