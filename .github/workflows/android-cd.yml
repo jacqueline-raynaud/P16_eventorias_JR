@@ -29,7 +29,7 @@ jobs:
       - name: Créer le fichier keystore
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_B64 }}
-        run: echo "$KEYSTORE_B64" | base64 -d > app/release.keystore
+        run: echo "$KEYSTORE_BASE64" | base64 -d > app/release.keystore
 
       - name: DEBUG - vérifier le keystore
         run: |
