@@ -28,8 +28,8 @@ jobs:
 
       - name: Créer le fichier google-services.json
         env:
-            GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
-        run: echo "$GOOGLE_SERVICES_JSON" > app/google-services.json
+            GOOGLE_SERVICES_JSON_B64: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo "$GOOGLE_SERVICES_JSON_B64" | base64 -d > app/google-services.json
 
       - name: build apk
         run: ./gradlew assembleDebug  # voir avec Virgile si release signée ou debug signature automatique
