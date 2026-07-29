@@ -1,0 +1,35 @@
+name: Build & upload to Firebase App Distribution
+
+on:
+  push:
+    tags:
+      - 'v*' # Le script se lance si le tag commence par "v" (ex: v1.0, v1.2.3)
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name : Récupération du code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurer Java 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: build release
+        run: ./gradlew assembleDebug  # voir avec Virgile si release signée ou debug signature automatique
+
+      - name: upload to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1.7.1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID}}  # identifiant de l'application Firebase
+          serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}  # fichier JSON
+          groups: testers  # groupe créé dans Firebase App Distribution console
+          file: app/build/outputs/apk/debug/app-debug.apk

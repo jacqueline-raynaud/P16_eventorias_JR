@@ -68,6 +68,8 @@ jobs:
         with :
           paths : ${{ github.workspace }}/app/build/reports/jacoco/jacocoCombinedReport/jacocoCombinedReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 40
+          min-coverage-changed-lines: 60
 
       - name: Cache SonarQube
         uses : actions/cache@v4
