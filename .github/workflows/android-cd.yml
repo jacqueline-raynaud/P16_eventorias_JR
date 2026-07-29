@@ -28,7 +28,7 @@ jobs:
 
       - name: Créer le fichier keystore
         env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_64 }}
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_B64 }}
         run: echo "$KEYSTORE_B64" | base64 -d > app/release.keystore
 
       - name: Créer local.properties (Maps + signature)
@@ -39,7 +39,7 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           echo "google.maps.key=$MAPS_API_KEY" > local.properties
-          echo "storeFile=app/release.keystore" >> local.properties
+          echo "storeFile=${{ github.workspace }}/app/release.keystore" >> local.properties
           echo "storePassword=$KEYSTORE_PASSWORD" >> local.properties
           echo "keyAlias=$KEY_ALIAS" >> local.properties
           echo "keyPassword=$KEYSTORE_PASSWORD" >> local.properties
