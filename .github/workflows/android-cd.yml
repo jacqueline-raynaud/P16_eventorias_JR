@@ -23,7 +23,10 @@ jobs:
           distribution: 'temurin'
           cache: gradle
 
-      - name: build release
+      - name: Rendre gradlew exécutable
+        run: chmod +x ./gradlew
+
+      - name: build apk
         run: ./gradlew assembleDebug  # voir avec Virgile si release signée ou debug signature automatique
 
       - name: upload to Firebase App Distribution
