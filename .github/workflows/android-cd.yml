@@ -26,6 +26,24 @@ jobs:
       - name: Rendre gradlew exécutable
         run: chmod +x ./gradlew
 
+      - name: Créer le fichier keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_64 }}
+        run: echo "$KEYSTORE_B64" | base64 -d > app/release.keystore
+
+      - name: Créer local.properties (Maps + signature)
+        env:
+          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          echo "google.maps.key=$MAPS_API_KEY" > local.properties
+          echo "storeFile=release.keystore" >> local.properties
+          echo "storePassword=$KEYSTORE_PASSWORD" >> local.properties
+          echo "keyAlias=$KEY_ALIAS" >> local.properties
+          echo "keyPassword=$KEYSTORE_PASSWORD" >> local.properties
+
       - name: Inject keys and secret config
         env:
           GOOGLE_SERVICES_JSON_B64: ${{ secrets.GOOGLE_SERVICES_JSON }}
@@ -36,7 +54,7 @@ jobs:
 
 
       - name: build apk
-        run: ./gradlew assembleDebug  # voir avec Virgile si release signée ou debug signature automatique
+        run: ./gradlew assembleRelease
 
       - name: upload to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1.7.1
@@ -44,4 +62,4 @@ jobs:
           appId: ${{secrets.FIREBASE_APP_ID}}  # identifiant de l'application Firebase
           serviceCredentialsFileContent: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}  # fichier JSON
           groups: testers  # groupe créé dans Firebase App Distribution console
-          file: app/build/outputs/apk/debug/app-debug.apk
+          file: app/build/outputs/apk/release/app-release.apk
