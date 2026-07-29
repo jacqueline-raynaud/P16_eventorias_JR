@@ -44,13 +44,11 @@ jobs:
           echo "keyAlias=$KEY_ALIAS" >> local.properties
           echo "keyPassword=$KEYSTORE_PASSWORD" >> local.properties
 
-      - name: Inject keys and secret config
+      - name: create google service json
         env:
           GOOGLE_SERVICES_JSON_B64: ${{ secrets.GOOGLE_SERVICES_JSON }}
-          MAPS_API_KEY: ${{ secrets.MAPS_API_KEY }}
-        run: |
+        run:
           echo "$GOOGLE_SERVICES_JSON_B64" | base64 -d > app/google-services.json
-          echo "google.maps.key=$MAPS_API_KEY" > local.properties
 
 
       - name: build apk
