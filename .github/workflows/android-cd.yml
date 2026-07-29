@@ -39,7 +39,7 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
           echo "google.maps.key=$MAPS_API_KEY" > local.properties
-          echo "storeFile=${{ github.workspace }}/app/release.keystore" >> local.properties
+          echo "storeFile=release.keystore" >> local.properties
           echo "storePassword=$KEYSTORE_PASSWORD" >> local.properties
           echo "keyAlias=$KEY_ALIAS" >> local.properties
           echo "keyPassword=$KEYSTORE_PASSWORD" >> local.properties
