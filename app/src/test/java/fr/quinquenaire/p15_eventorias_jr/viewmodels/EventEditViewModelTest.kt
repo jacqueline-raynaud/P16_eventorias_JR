@@ -95,6 +95,14 @@ class EventEditViewModelTest : BehaviorSpec({
         }
     }
 
+    Given("l'événement à charger est introuvable") {
+        val (viewModel, _, _) = buildViewModel(eventFlow = flowOf(null))
+        Then("l'état porte l'erreur 'Event not found'") {
+            viewModel.uiState.value.error shouldBe "Event not found"
+            viewModel.uiState.value.isLoading shouldBe false
+        }
+    }
+
     Given("le chargement initial a échoué") {
         val getEventDetailUseCase = mockk<GetEventDetailUseCase>()
         val updateEventUseCase = mockk<UpdateEventUseCase>()
@@ -108,6 +116,71 @@ class EventEditViewModelTest : BehaviorSpec({
             Then("le formulaire se charge enfin") {
                 verify(exactly = 2) { getEventDetailUseCase(eventId) }
                 viewModel.uiState.value.name shouldBe "Concert"
+            }
+        }
+    }
+
+// --- Mise à jour du formulaire ---
+
+    Given("les actions de mise à jour du formulaire") {
+
+        When("OnNameChange") {
+            val (viewModel, _, _) = buildViewModel()
+            viewModel.handleAction(EventEditAction.OnNameChange("Nouveau nom"))
+            Then("le nom est mis à jour") {
+                viewModel.uiState.value.name shouldBe "Nouveau nom"
+            }
+        }
+
+        When("OnDescriptionChange") {
+            val (viewModel, _, _) = buildViewModel()
+            viewModel.handleAction(EventEditAction.OnDescriptionChange("Nouvelle desc"))
+            Then("la description est mise à jour") {
+                viewModel.uiState.value.description shouldBe "Nouvelle desc"
+            }
+        }
+
+        When("OnCategoryChange") {
+            val (viewModel, _, _) = buildViewModel()
+            viewModel.handleAction(EventEditAction.OnCategoryChange(EventCategory.MUSIQUE))
+            Then("la catégorie est mise à jour") {
+                viewModel.uiState.value.category shouldBe EventCategory.MUSIQUE
+            }
+        }
+
+        When("OnDateSelected") {
+            val (viewModel, _, _) = buildViewModel()
+            viewModel.handleAction(EventEditAction.OnDateSelected(123456789L))
+            Then("la date est mise à jour") {
+                viewModel.uiState.value.dateMillis shouldBe 123456789L
+            }
+        }
+
+        When("OnTimeSelected") {
+            val (viewModel, _, _) = buildViewModel()
+            viewModel.handleAction(EventEditAction.OnTimeSelected(20, 45))
+            Then("l'heure et les minutes sont mises à jour") {
+                viewModel.uiState.value.hour shouldBe 20
+                viewModel.uiState.value.minute shouldBe 45
+            }
+        }
+
+        When("OnImageSelected") {
+            val (viewModel, _, _) = buildViewModel()
+            val uri = mockk<Uri>()
+            viewModel.handleAction(EventEditAction.OnImageSelected(uri))
+            Then("l'image est mise à jour") {
+                viewModel.uiState.value.imageUri shouldBe uri
+            }
+        }
+
+        When("OnBackClick") {
+            val (viewModel, _, _) = buildViewModel()
+            Then("l'effet NavigateBack est émis") {
+                viewModel.effect.test {
+                    viewModel.handleAction(EventEditAction.OnBackClick)
+                    awaitItem() shouldBe EventEditEffect.NavigateBack
+                }
             }
         }
     }
@@ -144,6 +217,18 @@ class EventEditViewModelTest : BehaviorSpec({
             eventSlot.captured.locationName shouldBe "Lyon"
             }
         }
+
+    Given("le formulaire est invalide") {
+        val (viewModel, updateEventUseCase, _) = buildViewModel()
+        viewModel.handleAction(EventEditAction.OnNameChange("")) // adapte au champ qui invalide
+
+        When("OnSaveClick") {
+            viewModel.handleAction(EventEditAction.OnSaveClick)
+            Then("aucune sauvegarde n'est déclenchée") {
+                coVerify(exactly = 0) { updateEventUseCase(any(), any(), any()) }
+            }
+        }
+    }
 
 
     Given("la sauvegarde échoue") {
