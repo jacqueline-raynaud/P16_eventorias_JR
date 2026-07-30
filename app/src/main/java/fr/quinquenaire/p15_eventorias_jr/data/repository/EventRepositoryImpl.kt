@@ -30,7 +30,7 @@ class EventRepositoryImpl @Inject constructor(
         }
 
         // 2. Tri (Natifs Firestore)
-        // Attention : Firestore nécessite un index composite si vous combinez where + orderBy
+        // Attention : Firestore nécessite un index composite si  combine where + orderBy
         query = when (params.sortOrder) {
             SortOrder.BY_DATE_ASC -> query.orderBy("date", Query.Direction.ASCENDING)
             SortOrder.BY_DATE_DESC -> query.orderBy("date", Query.Direction.DESCENDING)
