@@ -9,7 +9,7 @@ il s'agit de la deuxième partie du projet : qui consiste à mettre en place
 <!-- Remplacer "VOTRE_NOM" et "VOTRE_REPO" par vos vraies informations pour que les badges fonctionnent -->
 ![CI Status](https://github.com/jacqueline-raynaud/P16_eventorias_JR/actions/workflows/android-ci.yml/badge.svg)
 ![CD Status](https://github.com/jacqueline-raynaud/P16_eventorias_JR/actions/workflows/android-cd.yml/badge.svg)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=id=jacqueline-raynaud_P16_eventorias_JR&metric=alert_status)](https://sonarcloud.io/dashboard?id=jacqueline-raynaud_P16_eventorias_JR)
+[![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=jacqueline-raynaud_P16_eventorias_JR&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=jacqueline-raynaud_P16_eventorias_JR)
 
 Projet OpenClassrooms : Application Android permettant de découvrir, créer et gérer des événements.
 **Cette version intègre un pipeline complet d'Intégration et de Déploiement Continus (CI/CD) ainsi qu'un contrôle strict de la qualité du code.**
