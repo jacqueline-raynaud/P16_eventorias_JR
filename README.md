@@ -43,7 +43,8 @@ Déclenché à chaque **Pull Request** vers la branche `main` :
 - Vérification du code et exécution des tests unitaires (`./gradlew test`).
 - Lancement des tests instrumentés sur un émulateur headless (`./gradlew connectedAndroidTest`).
 - Génération du rapport de couverture de code (JaCoCo).
-- Analyse statique et validation de la *Quality Gate* via **SonarCloud**. Le merge est bloqué si les critères de qualité ne sont pas respectés.
+- Analyse statique et validation de la *Quality Gate* via **SonarCloud**. 
+- Mise en place d'une règle pour bloquer le merge si les critères de qualité ne sont pas respectés.
 
 ### 2. Déploiement Continu (CD) - `android-cd.yml`
 Déclenché lors de la création d'un **Tag** (ex: `v1.0.0`) :
