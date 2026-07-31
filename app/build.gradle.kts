@@ -294,6 +294,7 @@ sonar {
     properties {
         property("sonar.projectKey", "jacqueline-raynaud_P16_eventorias_JR")
         property("sonar.organization", "jacqueline-raynaud")
+        property("sonar.projectName", "P16_Eventorias")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.qualitygate.wait", "true")
         property("sonar.androidLint.reportPaths", "")
